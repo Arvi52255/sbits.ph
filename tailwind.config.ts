@@ -13,7 +13,7 @@ const config: Config = {
         foreground: "var(--foreground)",
         brand: {
           red: "#C8102E",
-          "red-dark": "#A00D25",
+          "red-dark": "#B80303",
           black: "#0A0A0A",
           white: "#FFFFFF",
         },
