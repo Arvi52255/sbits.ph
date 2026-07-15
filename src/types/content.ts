@@ -66,14 +66,22 @@ export interface Project {
 // ---------------------------------------------------------------------------
 
 export type PartnerCategory =
-  | "Networking"
-  | "Security"
-  | "Cloud"
-  | "Hardware"
-  | "Software"
-  | "Storage"
-  | "Collaboration"
-  | string; // left open — confirm final category list against company profile
+  | "Network"
+  | "Servers & Software"
+  | "Physical Infrastructure";
+// Locked in against the company profile's own 3-slide product grouping.
+// No `| string` escape hatch on purpose: a mistyped category should now be
+// a compile error, not a silent string that slips through.
+//
+// OPEN / DEFERRED (not this week): the company profile actually organizes
+// products one level finer than this — e.g. within "Network" there's
+// Firewall / Switches / Access Points / Wireless Routers, each with its
+// own vendor options. A dedicated Product or ProductCategory type could
+// let visitors browse "what SBITS sells" by product type rather than by
+// flat vendor logo grid, which may serve the site's core goal (showcasing
+// products/services) better than Partner alone. Explicitly deferred for
+// now, not rejected — revisit when the Partners/Products page is actually
+// being built, before locking in that page's component structure.
 
 export interface Partner {
   id: string;
@@ -143,6 +151,7 @@ export interface SocialLinks {
 export interface SiteSettings {
   companyName: string;
   tagline?: string;
+  logo: string; // path under /public/images/** — TODO: confirm exact folder name/filename; earlier convention proposed /images/brand/logo.png, but the actual local repo folder is named /images/sbits_logo/ — pick one and make them match before Tuesday's Header component ships.
   hero: HeroContent;
   about: AboutContent;
   contact: ContactInfo;

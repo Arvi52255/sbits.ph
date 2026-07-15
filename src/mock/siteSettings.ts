@@ -25,6 +25,7 @@ import { SiteSettings } from '@/types/content';
 export const siteSettings: SiteSettings = {
   companyName: 'SKWER BACE INFORMATION TECHNOLOGY SOLUTIONS',
   tagline: 'Information Technology Solutions',
+  logo: '/images/brand/logo.png',
 
   hero: {
     title: 'Your Trusted IT Solutions Partner',
