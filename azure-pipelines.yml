@@ -1,0 +1,94 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pr:
+  branches:
+    include:
+      - main
+
+variables:
+  NODE_VERSION: '20.x'
+
+stages:
+  # ---------------------------------------------------------------
+  # Stage 1: Validate — install deps, lint
+  # ---------------------------------------------------------------
+  - stage: Validate
+    displayName: 'Validate'
+    jobs:
+      - job: Lint
+        displayName: 'Install & Lint'
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - task: NodeTool@0
+            inputs:
+              versionSpec: $(NODE_VERSION)
+            displayName: 'Use Node $(NODE_VERSION)'
+
+          - script: |
+              npm ci
+            displayName: 'npm ci'
+
+          - script: |
+              npm run lint
+            displayName: 'Run ESLint'
+
+  # ---------------------------------------------------------------
+  # Stage 2: Build — production build, fails pipeline on build errors
+  # ---------------------------------------------------------------
+  - stage: Build
+    displayName: 'Build'
+    dependsOn: Validate
+    condition: succeeded()
+    jobs:
+      - job: BuildApp
+        displayName: 'Next.js Build'
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - task: NodeTool@0
+            inputs:
+              versionSpec: $(NODE_VERSION)
+            displayName: 'Use Node $(NODE_VERSION)'
+
+          - script: |
+              npm ci
+            displayName: 'npm ci'
+
+          - script: |
+              npm run build
+            displayName: 'next build'
+
+          # Publish the build output as a pipeline artifact so the
+          # (future) Deploy stage in Week 9 can consume it without
+          # rebuilding from scratch.
+          - task: PublishPipelineArtifact@1
+            inputs:
+              targetPath: '$(System.DefaultWorkingDirectory)'
+              artifact: 'app-build'
+              publishLocation: 'pipeline'
+            displayName: 'Publish build artifact'
+
+  # ---------------------------------------------------------------
+  # Stage 3: Deploy — PLACEHOLDER until Week 9 (Azure SWA wiring +
+  # custom domain cutover). Intentionally a no-op right now so the
+  # stage exists in pipeline history and can be required as a check,
+  # without actually deploying anything yet.
+  # ---------------------------------------------------------------
+  - stage: Deploy
+    displayName: 'Deploy (placeholder)'
+    dependsOn: Build
+    condition: succeeded()
+    jobs:
+      - job: DeployPlaceholder
+        displayName: 'Deploy — not yet implemented'
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - script: |
+              echo "Deploy stage placeholder — real Azure Static Web Apps deploy task goes here in Week 9."
+              echo "See progress summary §6, Week 9: Azure SWA deployment + custom domain DNS cutover."
+            displayName: 'Placeholder — Week 9 TODO'
