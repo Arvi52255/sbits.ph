@@ -8,26 +8,14 @@ import {Button} from "@/components/ui/Button";
 import {Badge} from "@/components/ui/Badge";
 import {Card} from "@/components/ui/Card";
 
-import HeroSolid from "@/components/hero-drafts/HeroSolid";
-import HeroGradient from "@/components/hero-drafts/HeroGradient";
-import HeroImage from "@/components/hero-drafts/HeroImage";
+import Hero from "@/components/Hero";
 
 export default function DevComponentShowcase() {
   return (
     <div className="space-y-16 p-8">
             <section>
     <h2 className="text-xl font-bold mb-4">Hero — Draft A (Solid)</h2>
-    <HeroSolid />
-    </section>
-
-    <section>
-    <h2 className="text-xl font-bold mb-4">Hero — Draft B (Image)</h2>
-    <HeroImage />
-    </section>
-
-    <section>
-    <h2 className="text-xl font-bold mb-4">Hero — Draft C (Gradient)</h2>
-    <HeroGradient />
+    <Hero />
     </section>
 
       <section>
@@ -57,7 +45,7 @@ export default function DevComponentShowcase() {
 
       <section>
         <h2 className="text-xl font-bold mb-4">Service Cards ({services.length})</h2>
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {services.map((s) => (
             <ServiceCard key={s.id} service={s} />
           ))}
